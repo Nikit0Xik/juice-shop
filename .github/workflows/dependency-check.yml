@@ -6,26 +6,20 @@ on:
       - main
 
 jobs:
-  security_scan:
-    runs-on: ubuntu-latest
-
+  build:
+    runs-on: windows-latest
+    
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Download Dependency-Check
-        run: |
-          wget https://dl.bintray.com/jeremy-long/owasp/dependency-check-6.2.2-release.zip
-          unzip dependency-check-6.2.2-release.zip -d dependency-check
+    - name: Set up Java JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: '11'
 
-      - name: Run Dependency-Check Scan
-        run: |
-          cd dependency-check
-          chmod +x dependency-check.sh
-          ./bin/dependency-check.sh --scan /path/to/your/project --format HTML --output /path/to/dependency-check-report.html
-
-      - name: Save Dependency-Check Report
-        uses: actions/upload-artifact@v2
-        with:
-          name: dependency-check-report
-          path: /path/to/dependency-check-report.html
+    - name: Run Dependency-Check
+      run: |
+        wget https://dl.bintray.com/jeremy-long/owasp/dependency-check-6.1.4-release.zip
+        Expand-Archive -Path .\dependency-check-6.1.4-release.zip -DestinationPath .\dependency-check
+        .\dependency-check\bin\dependency-check.bat --project "Juice Shop" --scan . --out .\dependency-check-report -f HTML
