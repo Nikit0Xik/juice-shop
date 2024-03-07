@@ -6,20 +6,31 @@ on:
       - main
 
 jobs:
-  build:
+  dependency-check:
     runs-on: windows-latest
-    
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Java JDK
-      uses: actions/setup-java@v1
+    - name: Set up Java
+      uses: actions/setup-java@v2
       with:
+        distribution: 'adopt'
         java-version: '11'
 
     - name: Run Dependency-Check
       run: |
-        wget https://dl.bintray.com/jeremy-long/owasp/dependency-check-6.1.4-release.zip
-        Expand-Archive -Path .\dependency-check-6.1.4-release.zip -DestinationPath .\dependency-check
-        .\dependency-check\bin\dependency-check.bat --project "Juice Shop" --scan . --out .\dependency-check-report -f HTML
+        # Завантаження Dependency-Check
+        Invoke-WebRequest -Uri https://dl.bintray.com/jeremy-long/owasp/dependency-check-6.1.6-release.zip -OutFile dependency-check.zip
+        Expand-Archive -Path dependency-check.zip -DestinationPath .\dependency-check
+
+        # Запуск Dependency-Check
+        .\dependency-check\bin\dependency-check.bat --scan .\path\to\your\project --format HTML -f .\reports\dependency-check-report.html
+
+      # Збереження звіту як артефакт
+    - name: Save report as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: dependency-check-report
+        path: ./reports/dependency-check-report.html
