@@ -26,7 +26,7 @@ jobs:
         Expand-Archive -Path dependency-check.zip -DestinationPath .\dependency-check
 
         # Запуск Dependency-Check
-        .\dependency-check\bin\dependency-check.bat --scan .\path\to\your\project --format HTML -f .\reports\dependency-check-report.html
+        .\dependency-check\bin\dependency-check.bat --scan . --format HTML -f .\reports\dependency-check-report.html
 
       # Збереження звіту як артефакт
     - name: Save report as artifact
