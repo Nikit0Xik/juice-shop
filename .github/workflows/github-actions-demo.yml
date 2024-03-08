@@ -23,7 +23,7 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
         with:
-          args: --format=sarif --sarif-category=Security --output=codeql-results.sarif .
+          args: --format=sarif --sarif-category=Security --output=codeql-results.sarif  
 
       - name: Upload CodeQL Results
         uses: actions/upload-artifact@v2
