@@ -1,8 +1,9 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
+name: Threat Report Pipeline
+run-name: ${{ github.actor }} is analyzing code for threats 🛡️
+on:
+  push:
 jobs:
-  Explore-GitHub-Actions:
+  Explore-Repository:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
@@ -11,16 +12,8 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - run: echo "🖥️ The workflow is now ready to analyze your code on the runner."
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
-      - name: Install Python and dependencies
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-      - name: Run Bandit for code analysis
-        run: |
-          pip install bandit
-          bandit -r .
